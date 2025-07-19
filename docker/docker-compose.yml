@@ -9,12 +9,12 @@ services:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_USER: test_user
       MYSQL_PASSWORD: Kh87Igs87HG
-      MYSQL_DATABASE: test_db
+      MYSQL_DATABASE: employees
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./test_db-master:/var/lib/mysql-files
+      - ./test_db:/var/lib/mysql-files  # завантажений репозиторій
 
 volumes:
   mysql_data:
