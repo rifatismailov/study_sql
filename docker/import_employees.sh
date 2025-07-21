@@ -27,14 +27,7 @@ for FILE in $FILE_LIST; do
   curl -s -O "$RAW_URL/$FILE"
 done
 
-# Завантажуємо sakila окремо, бо воно не в root-списку
 SAKILA_PATH="$BASE_PATH/sakila"
-mkdir -p "$SAKILA_PATH"
-cd "$SAKILA_PATH"
-echo "🔽 Завантажую файли Sakila..."
-curl -s -O "$RAW_URL/sakila/sakila-mv-schema.sql"
-curl -s -O "$RAW_URL/sakila/sakila-mv-data.sql"
-
 cd "$BASE_PATH"
 
 echo "🛠 Оновлюю шляхи у employees.sql..."
