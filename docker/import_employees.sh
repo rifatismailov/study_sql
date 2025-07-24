@@ -31,22 +31,22 @@ download_recursive() {
     type=$(echo "$item" | jq -r '.type')
     path=$(echo "$item" | jq -r '.path')
 
+    local target_path="$BASE_PATH/$current_path"
     if [[ "$type" == "file" ]]; then
-      target_dir="$BASE_PATH/$current_path"
-
-      # 🛡 Уникнення конфлікту з файлами
-      if [[ -e "$target_dir" && ! -d "$target_dir" ]]; then
-        echo "⚠️ Конфлікт: '$target_dir' — файл. Видаляю і створюю директорію..."
-        rm -f "$target_dir"
+      # 🛡 Уникнення конфлікту: якщо директорія існує як файл — видалити
+      if [[ -e "$target_path" && ! -d "$target_path" ]]; then
+        echo "⚠️ Конфлікт: '$target_path' — це файл, видаляю..."
+        rm -f "$target_path"
       fi
 
-      mkdir -p "$target_dir"
+      mkdir -p "$target_path"
       echo "⬇️ Завантажую файл: $path"
-      curl -s -o "$target_dir/$name" "$RAW_URL/$path"
+      curl -s -o "$target_path/$name" "$RAW_URL/$path"
 
     elif [[ "$type" == "dir" ]]; then
       echo "📁 Переходжу в директорію: $path"
-      download_recursive "$REPO_API_URL/$path" "$path"
+      # Рекурсивно заходимо в директорію, оновлюючи вкладеність
+      download_recursive "$REPO_API_URL/$path" "$current_path/$name"
     fi
   done
 }
