@@ -17,4 +17,6 @@ services:
       - ./test_db:/var/lib/mysql-files  # завантажений репозиторій
 
 volumes:
-  mysql_data:
+  mysql_data_base:
+
+
