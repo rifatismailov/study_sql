@@ -5,7 +5,7 @@ services:
     build:
       context: .
       args:
-        CACHE_BUSTER: ${1.0.1}  # змінна для примусового rebuild
+        CACHE_BUSTER: ${CACHE_BUSTER}  # змінна для примусового rebuild
     container_name: mysql-db
     restart: unless-stopped
     environment:
