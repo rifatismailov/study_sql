@@ -1,9 +1,9 @@
 FROM mysql:8.0
 
-# Копіюємо entrypoint.sh з репозиторію
-COPY docker/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Download entrypoint.sh from GitHub and make it executable
+RUN curl -s -o /entrypoint.sh https://raw.githubusercontent.com/rifatismailov/study_sql/main/docker/entrypoint.sh \
+    && chmod +x /entrypoint.sh
 
-# Вказуємо кастомний entrypoint
+# Use the downloaded entrypoint.sh as the entrypoint
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["mysqld"]
