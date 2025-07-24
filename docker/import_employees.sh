@@ -20,12 +20,12 @@ if [[ -e "$BASE_PATH/sakila" && ! -d "$BASE_PATH/sakila" ]]; then
   echo "⚠️ Знайшов файл $BASE_PATH/sakila. Видаляю, щоб створити папку..."
   rm -f "$BASE_PATH/sakila"
 fi
-лжойшгц оугйцпу нйцу цуйц уй цу23312
+
 download_recursive() {
   local api_url="$1"
   local current_path="$2"   # відносний шлях усередині BASE_PATH (може бути "")
 
-  echo "🌐 Отримуцю: $api_uівівrl"
+  echo "🌐 Отримую: $api_url"
   local response
   response=$(curl -s "$api_url")
 
