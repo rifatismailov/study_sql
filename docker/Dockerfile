@@ -1,8 +1,9 @@
 FROM mysql:8.0
 
-# Копіюємо кастомний entrypoint
-COPY ./docker/entrypoint.sh /entrypoint.sh
+# Копіюємо entrypoint.sh з репозиторію
+COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-ENTRYPOINT ["/docker/entrypoint.sh"]
+# Вказуємо кастомний entrypoint
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["mysqld"]
