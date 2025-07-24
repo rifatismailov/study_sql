@@ -2,7 +2,10 @@ version: '3.8'
 
 services:
   mysql:
-    build: .
+    build:
+      context: .
+      args:
+        CACHE_BUSTER: ${CACHE_BUSTER}  # змінна для примусового rebuild
     container_name: mysql-db
     restart: unless-stopped
     environment:
@@ -14,9 +17,8 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./test_db:/var/lib/mysql-files  # завантажений репозиторій
+      - ./test_db:/var/lib/mysql-files  # локальна папка зі скриптами
 
 volumes:
-  mysql_data_base:
-
+  mysql_data:
 
