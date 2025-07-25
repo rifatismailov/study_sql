@@ -18,41 +18,13 @@ sleep "$WAIT_SECONDS"
 echo "📁 Створюю директорію $BASE_PATH..."
 mkdir -p "$BASE_PATH"
 
-# 🔄 Рекурсивна функція завантаження
-download_recursive() {
-  local api_url="$1"
-  local current_path="$2"
-
-  echo "🌐 Отримую: $api_url"
-  response=$(curl -s "$api_url")
-
-  echo "$response" | jq -c '.[]' | while read -r item; do
-    name=$(echo "$item" | jq -r '.name')
-    type=$(echo "$item" | jq -r '.type')
-    path=$(echo "$item" | jq -r '.path')
-
-    if [[ "$type" == "file" ]]; then
-      target_dir="$BASE_PATH/$current_path"
-
-      # 🛡 Уникнення конфлікту з файлами
-      if [[ -e "$target_dir" && ! -d "$target_dir" ]]; then
-        echo "⚠️ Конфлікт: '$target_dir' — файл. Видаляю і створюю директорію..."
-        rm -f "$target_dir"
-      fi
-
-      mkdir -p "$target_dir"
-      echo "⬇️ Завантажую файл: $path"
-      curl -s -o "$target_dir/$name" "$RAW_URL/$path"
-
-    elif [[ "$type" == "dir" ]]; then
-      echo "📁 Переходжу в директорію: $path"
-      download_recursive "$REPO_API_URL/$path" "$path"
-    fi
-  done
-}
-
-# ▶️ Початок завантаження
-download_recursive "$REPO_API_URL" ""
+# 🔄 Завантаження списку файлів (тільки верхній рівень)
+echo "🌐 Отримую список файлів з $REPO_API_URL"
+curl -s "$REPO_API_URL" | grep '"path":' | cut -d '"' -f4 | while read -r path; do
+    filename=$(basename "$path")
+    echo "⬇️ Завантажую: $filename → $BASE_PATH/$filename"
+    curl -s -o "$BASE_PATH/$filename" "$RAW_URL/$path"
+done
 
 # 📍 Переходимо до каталогу
 cd "$BASE_PATH"
