@@ -6,6 +6,7 @@ set -e
 MYSQL_USER="test_user"
 MYSQL_PASSWORD="Kh87Igs87HG"
 MYSQL_DATABASE="sakila"
+MYSQL_ROOT_PASSWORD="rootpass"
 WAIT_SECONDS=5
 BASE_PATH="/var/lib/mysql-files/sakila"
 RAW_URL="https://raw.githubusercontent.com/datacharmer/test_db/master/sakila"
@@ -28,6 +29,10 @@ for file in "${FILES[@]}"; do
   echo "⬇️ Завантажую $file → $BASE_PATH/$file"
   curl -s -o "$BASE_PATH/$file" "$RAW_URL/$file"
 done
+
+# ⚙️ Увімкнення дозволу на створення функцій
+echo "⚙️ Встановлюю log_bin_trust_function_creators = 1..."
+mysql -uroot -p"$MYSQL_ROOT_PASSWORD" -e "SET GLOBAL log_bin_trust_function_creators = 1;"
 
 # 🛠 Створення бази
 echo "🗃 Створюю базу $MYSQL_DATABASE..."
