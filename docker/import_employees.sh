@@ -6,6 +6,7 @@ set -e
 MYSQL_USER="test_user"
 MYSQL_PASSWORD="Kh87Igs87HG"
 MYSQL_DATABASE="employees"
+MYSQL_ROOT_PASSWORD="rootpass"
 WAIT_SECONDS=25
 BASE_PATH="/var/lib/mysql-files/test_db"
 REPO_API_URL="https://api.github.com/repos/datacharmer/test_db/contents"
@@ -52,9 +53,9 @@ mysql -uroot -p"$MYSQL_ROOT_PASSWORD" -e "
   FLUSH PRIVILEGES;
 "
 
-# 📥 Імпорт бази employees
-echo "📥 Імпортую базу $MYSQL_DATABASE..."
-mysql -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" < "$BASE_PATH/employees.sql" \
+# 📥 Імпорт бази employees з правами root (бо source *.dump)
+echo "📥 Імпортую базу $MYSQL_DATABASE з правами root..."
+mysql -uroot -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE" < "$BASE_PATH/employees.sql" \
   && echo "✅ Імпорт employees успішний" || echo "❌ Помилка при імпорті"
 
 echo "✅ Готово! Усі файли завантажено, база $MYSQL_DATABASE імпортована!"
